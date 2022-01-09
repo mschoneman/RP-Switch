@@ -2,9 +2,7 @@ import QtQuick 2.12
     Rectangle {
         id: footer
         color: footerCSS.background
-        width: footerCSS.width
         height: footerCSS.height
-        anchors.top: main.bottom
         Rectangle{
           id: footer__border
           anchors.top: parent.top
@@ -15,17 +13,17 @@ import QtQuick 2.12
           color: theme.text
         }
         
-       // Image {
-       //     id: rp2
-       //     width: 36
-       //     fillMode: Image.PreserveAspectFit
-       //     source: "../assets/icons/"+ theme.footer_icon
-       //     asynchronous: true        
-       //     anchors.top: parent.top
-       //     anchors.left: parent.left
-       //     anchors.leftMargin: 42
-       //     anchors.topMargin: 14
-       // }      
+        // Image {
+        //     id: rp2
+        //     width: 36
+        //     fillMode: Image.PreserveAspectFit
+        //     source: "../assets/icons/"+ theme.footer_icon
+        //     asynchronous: true        
+        //     anchors.top: parent.top
+        //     anchors.left: parent.left
+        //     anchors.leftMargin: 42
+        //     anchors.topMargin: 14
+        // }      
         
         
         Rectangle{
@@ -35,7 +33,7 @@ import QtQuick 2.12
             width:500
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
-            
+
             Rectangle{
                 id: footer__legend_A
                 anchors.verticalCenter: parent.verticalCenter
@@ -58,13 +56,24 @@ import QtQuick 2.12
                          font.pixelSize: 12*screenRatio
                     }
                     Text{
-                         text:"Accept"
+                         text:"Open"
                          color: theme.text                       
                          anchors.verticalCenter: parent.verticalCenter
                          anchors.left: parent.right
                          anchors.leftMargin: 4
                          font.pixelSize: 10*screenRatio
-                         
+                         visible: currentPage === 'HomePage' ? 1 : 0            
+
+                    }
+                    Text{
+                         text:"Play"
+                         color: theme.text                       
+                         anchors.verticalCenter: parent.verticalCenter
+                         anchors.left: parent.right
+                         anchors.leftMargin: 4
+                         font.pixelSize: 10*screenRatio
+                         visible: currentPage !== 'HomePage' ? 1 : 0            
+
                     }
                 }
             }
@@ -104,7 +113,7 @@ import QtQuick 2.12
                 id: footer__legend_Y
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: footer__legend_A.left
-                anchors.rightMargin: 64*screenRatio
+                anchors.rightMargin: 80*screenRatio
                 Rectangle{
                     height:20*screenRatio
                     width:20*screenRatio
@@ -112,6 +121,7 @@ import QtQuick 2.12
                     radius:20
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right  
+                    visible: currentPage !== 'HomePage' ? 1 : 0            
                                 
                     Text{
                          text:"Y"
@@ -121,7 +131,7 @@ import QtQuick 2.12
                          font.pixelSize: 12*screenRatio
                     }
                     Text{
-                         text:"Zoom"
+                         text:"Favorite"
                          color: theme.text                       
                          anchors.verticalCenter: parent.verticalCenter
                          anchors.left: parent.right
@@ -135,7 +145,7 @@ import QtQuick 2.12
                 id: footer__legend_X
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: footer__legend_Y.left
-                anchors.rightMargin: 80*screenRatio
+                anchors.rightMargin: 75*screenRatio
                 Rectangle{
                     height:20*screenRatio
                     width:20*screenRatio
@@ -152,7 +162,7 @@ import QtQuick 2.12
                          font.pixelSize: 12*screenRatio
                     }
                     Text{
-                         text:"Favorite"
+                         text:"Details"
                          color: theme.text                       
                          anchors.verticalCenter: parent.verticalCenter
                          anchors.left: parent.right
@@ -205,7 +215,7 @@ import QtQuick 2.12
                     radius:20
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right  
-                    visible: currentPage === 'ListPage' ? 1 : 0            
+                    visible: currentPage !== 'HomePage' ? 1 : 0            
                     Text{
                          text:"R1"
                          color:"white"                    
@@ -238,7 +248,7 @@ import QtQuick 2.12
                     radius:20
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right  
-                    visible: currentPage === 'ListPage' ? 1 : 0            
+                    visible: currentPage !== 'HomePage' ? 1 : 0            
                     Text{
                          text:"L1"
                          color:"white"                    

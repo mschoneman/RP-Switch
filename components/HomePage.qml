@@ -69,8 +69,8 @@ import QtQuick 2.12
                                 navigate('ListPage');
                                 
                                 return;
-                            }      
-                            if (api.keys.isFilters(event)) {
+                            }  
+                            if (api.keys.isPageUp(event)) {
                                 event.accepted = true;
                                 toggleZoom();
                                 return;
@@ -81,7 +81,7 @@ import QtQuick 2.12
                             //     return;
                             // }  
 
-                                    
+    
                           }                          
                           
                           Text {
@@ -436,6 +436,9 @@ import QtQuick 2.12
     
      Footer{
       id: footer
-    }   
+      anchors.left: main.left
+      anchors.top: main.bottom
+      anchors.right: main.right
+     }
 
 }

@@ -3,9 +3,14 @@ import QtQuick 2.12
 
   Item{
     id: listpage     
-    property var itemWidth : (wrapperCSS.width-45)/itemsRow
+    property var itemWidth : 600/itemsRow
     property var itemHeight : itemWidth
 
+    property var gameIndex: 0
+    onGameIndexChanged: {
+      console.log('currentGameIndex Changed')
+      gameView.currentIndex = gameIndex
+    }
 
     Keys.onPressed: {
    
@@ -23,6 +28,31 @@ import QtQuick 2.12
           return;
       }  
       
+      //Next collection
+      if (api.keys.isNextPage(event)) {
+          event.accepted = true;
+          console.log('Next collection');
+          goBackSound.play()
+          currentCollectionIndex = currentCollectionIndex+1
+          if (currentCollectionIndex >= allCollections.length) {
+            currentCollectionIndex = 0;
+          }
+          currentGameIndex = 0;
+          return;
+      }  
+      
+      //Prev collection
+      if (api.keys.isPrevPage(event)) {
+          event.accepted = true;
+          console.log('Prev collection');
+          goBackSound.play()
+          currentCollectionIndex = currentCollectionIndex-1
+          if (currentCollectionIndex < 0) {
+            currentCollectionIndex = allCollections.length - 1;
+          }
+          currentGameIndex = 0;
+          return;
+      }  
                   
     }                          
              
@@ -130,7 +160,7 @@ import QtQuick 2.12
                       anchors.leftMargin: 6 
                       anchors.topMargin: 8
                       color: theme.text
-                      
+
                       onTextEdited: {
                           gameView.currentIndex = 0 //We move the highlight to the first item
                           searchValue = header__search_input.text
@@ -246,9 +276,9 @@ import QtQuick 2.12
                             return;
                         }  
                         
-                        
+
                         //toggleItemsRow     
-                        if (api.keys.isFilters(event)) {
+                        if (api.keys.isPageUp(event)) {
                             event.accepted = true;
                             toggleItemsRow();
                             
@@ -264,30 +294,23 @@ import QtQuick 2.12
                             // }
                             
                         }  
+
                         //Favorite
-                        if (api.keys.isDetails(event)) {
+                        if (api.keys.isFilters(event)) {
                             event.accepted = true;
                             favSound.play()                            
                             currentGameIndex = index
                             currentGame.favorite = !currentGame.favorite
                             return;
+                        }  
+                        // Details
+                        if (api.keys.isDetails(event)) {
+                            event.accepted = true;
+                            goBackSound.play()
+                            currentGameIndex = index
+                            navigate('DetailPage');
+                            return;
                         }                        
-                        //Next collection
-                        if (api.keys.isNextPage(event)) {
-                            event.accepted = true;
-                            goBackSound.play()
-                            currentCollectionIndex = currentCollectionIndex+1
-                           
-                            return;
-                        }  
-                        
-                        //Prev collection
-                        if (api.keys.isPrevPage(event)) {
-                            event.accepted = true;
-                            goBackSound.play()
-                            currentCollectionIndex = currentCollectionIndex-1
-                            return;
-                        }  
                         
                         //Search
                         if (api.keys.isPageDown(event)) {
@@ -512,10 +535,13 @@ import QtQuick 2.12
         }
         
         
-    }  
+      }  
     
      Footer{
       id: footer
+      anchors.left: main.left
+      anchors.top: main.bottom
+      anchors.right: main.right
     }   
 
 }

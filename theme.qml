@@ -47,6 +47,7 @@ FocusScope {
   
   property var themeLight : {
       "background": "#ebebeb",
+      "sidebarBackground": "#ffffff",
       "accent": "#10adc5",
       "buttons": "white",
       "text":"#666666",
@@ -57,12 +58,13 @@ FocusScope {
   
   property var themeDark : {
     "background": "#222222",
+    "sidebarBackground": "#000000",
     "accent": "#10adc5",
     "buttons": "#4a4a4a",
     "text":"#6f6f6f",
     "footer_icon":"rp2_dark.png",
     "system_icon":"allsoft_icon_dark.svg",    
-    "title":"white"    
+    "title":"white"
   }     
     
   property var theme : api.memory.get('theme') === 'themeLight' ? themeLight : themeDark ;
@@ -72,8 +74,8 @@ FocusScope {
   property var aspectRatio : root.width / root.height < 1.7 ? 43 : 169
 
 
-  property var itemsNumber : aspectRatio === 43 ? 3 : 4
-  
+    property var itemsNumber : aspectRatio === 43 ? 3 : 4
+
   //used by Zoom in game lists
   property var itemsRow : api.memory.get('itemsRow') ? api.memory.get('itemsRow') : itemsNumber ;
   
@@ -93,7 +95,7 @@ FocusScope {
       "background": "transparent",
   }
   
-  property var mainCSS : {
+    property var mainCSS : {
       "width": wrapperCSS.width,
       "height": wrapperCSS.height - headerCSS.height - footerCSS.height,
       "background": "transparent",
@@ -162,6 +164,7 @@ FocusScope {
     /*pageNames    
     'HomePage'
     'ListPage'
+    'DetailPage'
     */
   }
   
@@ -298,8 +301,14 @@ FocusScope {
     
     Components.ListPage {
       visible: currentPage === 'ListPage' ? 1 : 0 ;
+      gameIndex: currentGameIndex
     }  
-  
+
+    Components.DetailPage {
+      visible: currentPage === 'DetailPage' ? 1 : 0 ;
+      focus: currentPage === 'DetailPage'
+      game: currentGame
+    }  
   }   
   
 
