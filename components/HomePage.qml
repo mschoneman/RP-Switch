@@ -89,10 +89,10 @@ import QtQuick 2.12
                               text: modelData.name
                               anchors.top: parent.top
                               color: theme.accent
-                              font.pixelSize: vpx(12*screenRatio)
+                              font.pixelSize: vpx(36*screenRatio)
                               font.bold: true
                               font.family: titleFont.name
-                              height: vpx(20*screenRatio)
+                              height: vpx(40*screenRatio)
                               verticalAlignment: Text.AlignVCenter
                               elide: Text.ElideRight
                               width: systems.height-systems__item_title.height
