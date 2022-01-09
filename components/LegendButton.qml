@@ -6,14 +6,13 @@ import QtQuick.Layouts 1.15
         property var buttonText: null
 
         height: parent.height
-        anchors.verticalCenter: parent.verticalCenter
 
         Rectangle{
             height:20*screenRatio
             width:20*screenRatio
             color:"#444"
             radius:20*screenRatio
-            anchors.verticalCenter: parent.verticalCenter
+            Layout.alignment: Qt.AlignVCenter
 
             Text{
                 text: buttonName
@@ -28,7 +27,7 @@ import QtQuick.Layouts 1.15
         Text{
             text: buttonText
             color: theme.text                       
-            anchors.verticalCenter: parent.verticalCenter
+            Layout.alignment: Qt.AlignVCenter
             font.pixelSize: 10*screenRatio
         }
     }

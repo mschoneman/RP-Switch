@@ -6,11 +6,11 @@ Item {
 
     property var game: null
     onGameChanged: {
-        console.log('OnGameChanged:' + game.title)
         textScroll = 0;
     }
 
     property var mainGenre: {
+        if (!game){ return null }
         if (game.genreList.lenght == 0){
             return null 
         }
@@ -33,16 +33,16 @@ Item {
     }
 
     property var releaseDateDeveloper: {
-        return [releaseDate, developedBy].filter(v => { return v != "" }).join(" • ")
+        return [releaseDate, developedBy].filter(v => { return v != null }).join(" • ")
     }
 
     property var releaseDate: {
-        if (!game){ return "" }
+        if (!game){ return null }
         return (game.releaseYear)? "Released " + game.releaseYear: ""
     }
 
     property var developedBy: {
-        if (!game){ return "" }
+        if (!game){ return null }
         return "Developed By " + game.developer
     }
 
@@ -52,7 +52,7 @@ Item {
 
     property var textScroll: 0
 
-    property var scrollMoveAmount : 100
+    property var scrollMoveAmount : 100*screenRatio
 
 
     Rectangle {
@@ -64,9 +64,6 @@ Item {
 
         Keys.onDownPressed: {
             var maxHeight =  textElement.paintedHeight - background.height
-            console.log('max height ' + maxHeight)
-            console.log('background height ' + background.height)
-
             textScroll = Math.max(Math.min(textScroll + scrollMoveAmount, maxHeight), 0)
         }
 
@@ -76,50 +73,39 @@ Item {
 
         Keys.onPressed: {
 
-            console.log('got a key: ' + event);
-
-            //Back to List. It's up here so when a list has no games you can still go back to the home
+            //Back to List
             if (api.keys.isCancel(event)) {
                 event.accepted = true;
-                console.log('exit details');
                 navigate('ListPage');
                 return;
             }
 
             if (api.keys.isFilters(event)) {
                 event.accepted = true;
-                console.log('Favorite');
                 favSound.play()
                 game.favorite = !game.favorite
                 return;
             }
 
-            //Next collection
+            //Next game
             if (api.keys.isNextPage(event)) {
                 event.accepted = true;
-                console.log('Next game');
-                
-                console.log('Old currentGameIndex ' + currentGameIndex);
-                console.log('currentCollection.games.count ' + currentCollection.games.count);
                 if (currentGameIndex < currentCollection.games.count - 1) {
                     currentGameIndex++
                 } else {
                     currentGameIndex = 0;
                 }
-                console.log('New currentGameIndex ' + currentGameIndex);
                 return;
             }  
             
-            //Prev collection
+            //Prev game
             if (api.keys.isPrevPage(event)) {
                 event.accepted = true;
-                console.log('Prev game');
                 if (currentGameIndex > 0) {
                     currentGameIndex--
                 } else {
                     currentGameIndex = currentCollection.games.count - 1
                 }
-                navigate('DetailPage');
                 return;
             }  
 
@@ -162,7 +148,7 @@ Item {
 
                 Image {
                     id: boxart
-                    source: game.assets.boxFront 
+                    source: game != null ? game.assets.boxFront : ""
                     anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
                 }
@@ -193,10 +179,10 @@ Item {
 
             Text {
                 id: titleText
-                text: game.title
+                text: game != null ? game.title : ""
                 lineHeight: 1.2
                 color: theme.title
-                font.pixelSize: 22
+                font.pixelSize: 22*screenRatio
                 font.letterSpacing: -0.35
                 width: parent.width
                 wrapMode: Text.WordWrap
@@ -209,7 +195,7 @@ Item {
                 anchors.top: titleText.bottom
                 text: playerGenre
                 color: theme.text
-                font.pixelSize: 14
+                font.pixelSize: 14*screenRatio
                 font.letterSpacing: -0.35
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -221,13 +207,13 @@ Item {
                 anchors.top: playerGenreText.bottom
                 text: releaseDateDeveloper
                 color: theme.text
-                font.pixelSize: 14
+                font.pixelSize: 14*screenRatio
                 font.letterSpacing: -0.35
             }
 
             Item {  
                 anchors.top: releaseDateDeveloperText.bottom
-                anchors.topMargin: 10
+                anchors.topMargin: 10*screenRatio
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
@@ -241,12 +227,12 @@ Item {
 
                     Text {
                         id: textElement
-                        text: game.description
+                        text: game ? game.description : ""
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.top: parent.top            
                         anchors.topMargin: 0 - textScroll
-                        font.pixelSize: 16
+                        font.pixelSize: 16*screenRatio
                         font.letterSpacing: -0.35
                         color: theme.text
                         wrapMode: Text.WordWrap
@@ -274,9 +260,9 @@ Item {
     Canvas {
         id: game__is_fav
         // canvas size
-        width: 60; height: 60;
+        width: 60*screenRatio; height: 60*screenRatio;
         opacity: 0.8
-        visible: game.favorite
+        visible: game && game.favorite
         // handler to override for drawing
         onPaint: {
             // get context to draw with
@@ -291,9 +277,9 @@ Item {
             // top-left start point
             ctx.moveTo(0, 0)
             // upper line
-            ctx.lineTo(60, 0)
+            ctx.lineTo(60*screenRatio, 0)
             // right line
-            ctx.lineTo(0, 60)
+            ctx.lineTo(0, 60*screenRatio)
             // bottom line
             ctx.lineTo(0, 0)
             // left line through path closing
@@ -302,7 +288,7 @@ Item {
             ctx.fill()
         }
         Image {
-            width: 24
+            width: 24*screenRatio
             fillMode: Image.PreserveAspectFit
             source: "../assets/icons/heart_solid.svg"
             asynchronous: true
@@ -311,8 +297,8 @@ Item {
                 left: parent.left;
                 top: parent.top;
             }
-            anchors.leftMargin: 6
-            anchors.topMargin: 6
+            anchors.leftMargin: 6*screenRatio
+            anchors.topMargin: 6*screenRatio
         }
 
     }

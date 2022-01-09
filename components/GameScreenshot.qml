@@ -13,13 +13,12 @@ Item {
     property var active: false
 
     property var screenshot: {
-        if(!game) {return null}
+        if(!game) {return ""}
         return game.assets.screenshot
     }
     property var video: {
-        if(!game) {return null}
+        if(!game) {return ""}
         return game.assets.video
-        return null
     }
 
     Timer {

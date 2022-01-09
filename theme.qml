@@ -70,7 +70,7 @@ FocusScope {
   property var theme : api.memory.get('theme') === 'themeLight' ? themeLight : themeDark ;
   
   property var searchValue: '';
-  property var screenRatio : (root.width * root.height) / (640 * 480)
+  property var screenRatio : Math.min((root.width * root.height) / (640 * 480),1.5)
   property var aspectRatio : root.width / root.height < 1.7 ? 43 : 169
 
 

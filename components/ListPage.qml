@@ -8,7 +8,6 @@ import QtQuick 2.12
 
     property var gameIndex: 0
     onGameIndexChanged: {
-      console.log('currentGameIndex Changed')
       gameView.currentIndex = gameIndex
     }
 
@@ -31,7 +30,6 @@ import QtQuick 2.12
       //Next collection
       if (api.keys.isNextPage(event)) {
           event.accepted = true;
-          console.log('Next collection');
           goBackSound.play()
           currentCollectionIndex = currentCollectionIndex+1
           if (currentCollectionIndex >= allCollections.length) {
@@ -44,7 +42,6 @@ import QtQuick 2.12
       //Prev collection
       if (api.keys.isPrevPage(event)) {
           event.accepted = true;
-          console.log('Prev collection');
           goBackSound.play()
           currentCollectionIndex = currentCollectionIndex-1
           if (currentCollectionIndex < 0) {
@@ -264,7 +261,7 @@ import QtQuick 2.12
                       property var gameViewStyle : 'standard'
                       width: itemWidth
                       height: itemHeight
-                    
+                      z: delegateContainer.GridView.isCurrentItem ? 10 : 1
                   
                       Keys.onPressed: {
                         //Launch game
@@ -331,7 +328,7 @@ import QtQuick 2.12
                         color:"transparent"
                         width: itemWidth
                         height: itemHeight
-                        clip:true
+                        //clip:true
                         Rectangle{
                           id:game__inner_border
                           width:parent.width-4
@@ -477,7 +474,7 @@ import QtQuick 2.12
                             }    
                             
                         }                        
-                      }
+                      
                       
                       Rectangle{
                         id: game__title
@@ -490,6 +487,7 @@ import QtQuick 2.12
                             bottom: game__is_selected.bottom;
                         }        
                         anchors.topMargin: -4                  
+                        anchors.bottomMargin: 8
                         anchors.horizontalCenter: parent.horizontalCenter
                         //x: 400
                         y:-40
@@ -509,24 +507,8 @@ import QtQuick 2.12
                         
                         
                       }     
-                      
-                        Rectangle{
-                          id: game__title_triangle
-                          // anchors.horizontalCenter: delegateContainer.horizontalCenter
-                          x: itemWidth/2
-                          width:12
-                          height:12
-                          visible: selected ? 1 : 0
-                          color:theme.buttons
-                          transform: Rotation { angle: 45}
-                          anchors.top: game__title.bottom
-                          anchors.topMargin: -10    
-                        }
-                        
-                                         
-                      
-                      
-                    }               
+                    } 
+                    }              
                 }
                                 
             }
