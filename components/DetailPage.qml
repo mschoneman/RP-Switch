@@ -54,6 +54,18 @@ Item {
 
     property var scrollMoveAmount : 100*screenRatio
 
+    property var sidebarWidth: {
+        return 260
+    }
+
+    property var screenshotHeight: {
+        return 170
+    }
+
+    property var boxartHeight: {
+        return 250
+    }
+
 
     Rectangle {
         id: detailsWrapper
@@ -114,13 +126,13 @@ Item {
         Rectangle {
             id: sidebar
             color: theme.sidebarBackground
-            width: 260
+            width: sidebarWidth
             height: wrapperCSS.height
             opacity: 1.0
 
             Rectangle {
                 color: "transparent"
-                height:170
+                height:screenshotHeight
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
                 anchors.left: parent.left
@@ -138,7 +150,7 @@ Item {
 
             Rectangle {
                 color: "transparent"
-                height:250
+                height: boxartHeight
                 anchors.top: parent.top
                 anchors.topMargin: 10
                 anchors.right: parent.right
@@ -151,6 +163,15 @@ Item {
                     source: game != null ? game.assets.boxFront : ""
                     anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
+                }
+                Rectangle {
+                    width: boxart.paintedWidth + 3
+                    height: boxart.paintedHeight + 3
+                    color: "transparent"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    border.color: theme.background
+                    border.width: 2
                 }
             }
 

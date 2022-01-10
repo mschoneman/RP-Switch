@@ -25,7 +25,7 @@ Item {
         id: timer
         running: false
         repeat: false
-        interval: 7000
+        interval: 5000
 
         onTriggered: {
             if(video && active) {
@@ -37,6 +37,7 @@ Item {
     onGameChanged: {
         videoPlayer.stop()
         timer.stop()
+        videoRect.opacity = 0
         timer.start()
     }
 
@@ -44,10 +45,12 @@ Item {
         if (video && active) {
             videoPlayer.stop()
             timer.stop()
+            videoRect.opacity = 0
             timer.start()
         } else {
             videoPlayer.stop()
             timer.stop()
+            videoRect.opacity = 0
         }
     }
 
@@ -55,18 +58,36 @@ Item {
         source: screenshot
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
-        visible: videoPlayer.playbackState != MediaPlayer.PlayingState
+        opacity: 1
     }
 
-    Video {
-        id: videoPlayer
+    Rectangle {
+        id: videoRect
         anchors.fill: parent
-        fillMode: Image.PreserveAspectFit
-        source: video
-        autoLoad: true
-        autoPlay: false
-        loops: MediaPlayer.Infinite 
-        visible: videoPlayer.playbackState == MediaPlayer.PlayingState
-    }
+        color: theme.sidebarBackground
+        opacity: 0
+        Video {
+            id: videoPlayer
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectFit
+            source: video
+            autoLoad: true
+            autoPlay: false
+            loops: MediaPlayer.Infinite 
+           
+
+            onPlaying: {
+                videoAnimator.running = true;
+            }
+        }
+        OpacityAnimator {
+            id: videoAnimator;
+            target: videoRect;
+            from: 0;
+            to: 1;
+            duration: 2000
+            running: false
+        }
+   }
 
 }
